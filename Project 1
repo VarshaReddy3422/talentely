@@ -1,0 +1,1024 @@
+//two sum
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[] { i, j };
+                }
+            }
+        }
+        return new int[0]; // Return an empty array if no solution is found
+    }
+}
+        
+//palindrome Number
+class Solution {
+    public static boolean isPalindrome(int x) {
+        // Negative numbers and numbers ending with 0 (except 0 itself) are not palindromes
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+
+        int reversedHalf = 0;
+        while (x > reversedHalf) {
+            reversedHalf = reversedHalf * 10 + x % 10;
+            x /= 10;
+        }
+
+        // Check if the original half and reversed half are equal
+        // For odd-length numbers, ignore the middle digit
+        return x == reversedHalf || x == reversedHalf / 10;
+    }
+
+    public static void main(String[] args) {
+        // Test cases
+        System.out.println(isPalindrome(121));  // Output: true
+        System.out.println(isPalindrome(-121)); // Output: false
+        System.out.println(isPalindrome(10));   // Output: false
+    }
+}
+
+//roman to Integer
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int romanToInt(String s) {
+        // Map to store the Roman numeral values
+        Map<Character, Integer> romanMap = new HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
+
+        int total = 0;
+        int prevValue = 0;
+
+        // Traverse the string from right to left
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char currentChar = s.charAt(i);
+            int currentValue = romanMap.get(currentChar);
+
+            // If the current value is less than the previous value, subtract it
+            if (currentValue < prevValue) {
+                total -= currentValue;
+            } else {
+                // Otherwise, add it to the total
+                total += currentValue;
+            }
+
+            // Update the previous value
+            prevValue = currentValue;
+        }
+
+        return total;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        // Test cases
+        System.out.println(solution.romanToInt("III"));       // Output: 3
+        System.out.println(solution.romanToInt("LVIII"));     // Output: 58
+        System.out.println(solution.romanToInt("MCMXCIV"));   // Output: 1994
+    }
+}
+
+//Summary Ranges
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> ranges = new ArrayList<>();
+        if (nums.length == 0) {
+            return ranges;
+        }
+
+        int start = nums[0];
+        for (int i = 1; i <= nums.length; i++) {
+            if (i == nums.length || nums[i] != nums[i - 1] + 1) {
+                if (start == nums[i - 1]) {
+                    ranges.add(String.valueOf(start));
+                } else {
+                    ranges.add(start + "->" + nums[i - 1]);
+                }
+                if (i < nums.length) {
+                    start = nums[i];
+                }
+            }
+        }
+        return ranges; 
+        }
+         public static void main(String[] args) 
+         {
+             Solution solution = new Solution();
+              int[] nums = {0, 1, 2, 4, 5, 7};
+               System.out.println(solution.summaryRanges(nums)); // Output: ["0->2", "4->5", "7"]
+                }
+                 }
+
+//power of two
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        while (n % 2 == 0) {
+            n /= 2;
+        }
+        return n == 1;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isPowerOfTwo(1));  // Output: true
+        System.out.println(solution.isPowerOfTwo(16)); // Output: true
+        System.out.println(solution.isPowerOfTwo(18)); // Output: false
+    }
+}
+
+//Implement Queue using Stacks
+import java.util.Stack;
+
+class MyQueue {
+    private Stack<Integer> stack1;
+    private Stack<Integer> stack2;
+
+    public MyQueue() {
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
+    }
+
+    public void push(int x) {
+        stack1.push(x);
+    }
+
+    public int pop() {
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.pop();
+    }
+
+    public int peek() {
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.peek();
+    }
+
+    public boolean empty() {
+        return stack1.isEmpty() && stack2.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        MyQueue myQueue = new MyQueue();
+        myQueue.push(1);
+        myQueue.push(2);
+        System.out.println(myQueue.peek());  // Output: 1
+        System.out.println(myQueue.pop());   // Output: 1
+        System.out.println(myQueue.empty()); // Output: false
+    }
+}
+
+//Valid Anagram
+import java.util.Arrays;
+
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        
+        char[] sArray = s.toCharArray();
+        char[] tArray = t.toCharArray();
+        
+        Arrays.sort(sArray);
+        Arrays.sort(tArray);
+        
+        return Arrays.equals(sArray, tArray);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isAnagram("anagram", "nagaram")); // Output: true
+        System.out.println(solution.isAnagram("rat", "car"));         // Output: false
+    }
+}
+
+//Binary Tree path
+import java.util.ArrayList;
+import java.util.List;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> paths = new ArrayList<>();
+        if (root != null) {
+            findPaths(root, "", paths);
+        }
+        return paths;
+    }
+
+    private void findPaths(TreeNode node, String path, List<String> paths) {
+        if (node.left == null && node.right == null) {
+            paths.add(path + node.val);
+        }
+        if (node.left != null) {
+            findPaths(node.left, path + node.val + "->", paths);
+        }
+        if (node.right != null) {
+            findPaths(node.right, path + node.val + "->", paths);
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.right = new TreeNode(5);
+
+        System.out.println(solution.binaryTreePaths(root)); // Output: ["1->2->5", "1->3"]
+    }
+}
+
+//Add Digits
+class Solution {
+    public int addDigits(int num) {
+        while (num >= 10) {
+            int sum = 0;
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
+            }
+            num = sum;
+        }
+        return num;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.addDigits(38)); // Output: 2
+        System.out.println(solution.addDigits(0));  // Output: 0
+    }
+}
+
+//Ugly Numbers
+class Solution {
+    public boolean isUgly(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        int[] factors = {2, 3, 5};
+        for (int factor : factors) {
+            while (n % factor == 0) {
+                n /= factor;
+            }
+        }
+        return n == 1;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isUgly(6));  // Output: true
+        System.out.println(solution.isUgly(1));  // Output: true
+        System.out.println(solution.isUgly(14)); // Output: false
+    }
+}
+
+//Missing Numbers
+class Solution {
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int expectedSum = n * (n + 1) / 2;
+        int actualSum = 0;
+        for (int num : nums) {
+            actualSum += num;
+        }
+        return expectedSum - actualSum;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums1 = {3, 0, 1};
+        int[] nums2 = {0, 1};
+        System.out.println(solution.missingNumber(nums1)); // Output: 2
+        System.out.println(solution.missingNumber(nums2)); // Output: 2
+    }
+}
+
+//First Bad version
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int left = 1;
+        int right = n;
+        
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (isBadVersion(mid)) {
+                right = mid; // The first bad version is in the left half
+            } else {
+                left = mid + 1; // The first bad version is in the right half
+            }
+        }
+        
+        return left; // or return right, both are the same at this point
+    }
+}
+
+//Move Zeros
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int lastNonZeroFoundAt = 0;
+        
+        // Move all non-zero elements to the front of the array
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[lastNonZeroFoundAt++] = nums[i];
+            }
+        }
+        
+        // Fill the remaining positions with zeros
+        for (int i = lastNonZeroFoundAt; i < nums.length; i++) {
+            nums[i] = 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums1 = {0, 1, 0, 3, 12};
+        solution.moveZeroes(nums1);
+        System.out.println(Arrays.toString(nums1)); // Output: [1, 3, 12, 0, 0]
+
+        int[] nums2 = {0};
+        solution.moveZeroes(nums2);
+        System.out.println(Arrays.toString(nums2)); // Output: [0]
+    }
+}
+
+//Word Pattern
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        String[] words = s.split(" ");
+        if (pattern.length() != words.length) {
+            return false;
+        }
+
+        Map<Character, String> charToWord = new HashMap<>();
+        Map<String, Character> wordToChar = new HashMap<>();
+
+        for (int i = 0; i < pattern.length(); i++) {
+            char c = pattern.charAt(i);
+            String word = words[i];
+
+            if (charToWord.containsKey(c)) {
+                if (!charToWord.get(c).equals(word)) {
+                    return false;
+                }
+            } else {
+                if (wordToChar.containsKey(word)) {
+                    return false;
+                }
+                charToWord.put(c, word);
+                wordToChar.put(word, c);
+            }
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.wordPattern("abba", "dog cat cat dog")); // Output: true
+        System.out.println(solution.wordPattern("abba", "dog cat cat fish")); // Output: false
+        System.out.println(solution.wordPattern("aaaa", "dog cat cat dog")); // Output: false
+        System.out.println(solution.wordPattern("abba", "dog dog dog dog")); // Output: false
+    }
+}
+
+//Nim Game
+class Solution {
+    public boolean canWinNim(int n) {
+        return n % 4 != 0;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.canWinNim(4));  // Output: false
+        System.out.println(solution.canWinNim(5));  // Output: true
+    }
+}
+
+//Range Sum Query Immutable
+class NumArray {
+    private int[] prefixSums;
+
+    public NumArray(int[] nums) {
+        prefixSums = new int[nums.length + 1];
+        for (int i = 0; i < nums.length; i++) {
+            prefixSums[i + 1] = prefixSums[i] + nums[i];
+        }
+    }
+
+    public int sumRange(int left, int right) {
+        return prefixSums[right + 1] - prefixSums[left];
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {-2, 0, 3, -5, 2, -1};
+        NumArray numArray = new NumArray(nums);
+        System.out.println(numArray.sumRange(0, 2)); // Output: 1
+        System.out.println(numArray.sumRange(2, 5)); // Output: -1
+        System.out.println(numArray.sumRange(0, 5)); // Output: -3
+    }
+}
+
+//Power of Tree
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        while (n % 3 == 0) {
+            n /= 3;
+        }
+        return n == 1;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isPowerOfThree(27)); // Output: true
+        System.out.println(solution.isPowerOfThree(0));  // Output: false
+        System.out.println(solution.isPowerOfThree(9));  // Output: true
+        System.out.println(solution.isPowerOfThree(45)); // Output: false
+    }
+}
+
+//Counting Bits
+class Solution {
+    public int[] countBits(int n) {
+        int[] ans = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            ans[i] = countOnes(i);
+        }
+        return ans;
+    }
+
+    private int countOnes(int num) {
+        int count = 0;
+        while (num > 0) {
+            count += num & 1;
+            num >>= 1;
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] result1 = solution.countBits(2);
+        System.out.println(Arrays.toString(result1)); // Output: [0, 1, 1]
+
+        int[] result2 = solution.countBits(5);
+        System.out.println(Arrays.toString(result2)); // Output: [0, 1, 1, 2, 1, 2]
+    }
+}
+
+//Power of Four
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        while (n % 4 == 0) {
+            n /= 4;
+        }
+        return n == 1;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isPowerOfFour(16)); // Output: true
+        System.out.println(solution.isPowerOfFour(5));  // Output: false
+    }
+}
+
+//Reverse String
+class Solution {
+    public void reverseString(char[] s) {
+        int left = 0;
+        int right = s.length - 1;
+        
+        while (left < right) {
+            // Swap the characters at left and right indices
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            
+            // Move the pointers towards the center
+            left++;
+            right--;
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        char[] s1 = {'h', 'e', 'l', 'l', 'o'};
+        solution.reverseString(s1);
+        System.out.println(Arrays.toString(s1)); // Output: ["o", "l", "l", "e", "h"]
+
+        char[] s2 = {'H', 'a', 'n', 'n', 'a', 'h'};
+        solution.reverseString(s2);
+        System.out.println(Arrays.toString(s2)); // Output: ["h", "a", "n", "n", "a", "H"]
+    }
+}
+
+//Sum of Left leaves
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int sum = 0;
+        if (root.left != null && root.left.left == null && root.left.right == null) {
+            sum += root.left.val;
+        }
+        return sum + sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(9);
+        root.right = new TreeNode(20);
+        root.right.left = new TreeNode(15);
+        root.right.right = new TreeNode(7);
+
+        System.out.println(solution.sumOfLeftLeaves(root)); // Output: 24
+    }
+}
+
+//Binary Watch
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<String> readBinaryWatch(int turnedOn) {
+        List<String> times = new ArrayList<>();
+        for (int h = 0; h < 12; h++) {
+            for (int m = 0; m < 60; m++) {
+                if (Integer.bitCount(h) + Integer.bitCount(m) == turnedOn) {
+                    times.add(String.format("%d:%02d", h, m));
+                }
+            }
+        }
+        return times;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.readBinaryWatch(1)); // Example output: ["0:01", "0:02", "0:04", "0:08", "0:16", "0:32", "1:00", "2:00", "4:00", "8:00"]
+    }
+}
+
+//In Subsequence
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int sIndex = 0, tIndex = 0;
+        
+        while (sIndex < s.length() && tIndex < t.length()) {
+            if (s.charAt(sIndex) == t.charAt(tIndex)) {
+                sIndex++;
+            }
+            tIndex++;
+        }
+        
+        return sIndex == s.length();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isSubsequence("abc", "ahbgdc")); // Output: true
+        System.out.println(solution.isSubsequence("axc", "ahbgdc")); // Output: false
+    }
+}
+
+//Find the Difference
+class Solution {
+    public char findTheDifference(String s, String t) {
+        int charSumS = 0, charSumT = 0;
+        
+        for (char c : s.toCharArray()) {
+            charSumS += c;
+        }
+        
+        for (char c : t.toCharArray()) {
+            charSumT += c;
+        }
+        
+        return (char) (charSumT - charSumS);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.findTheDifference("abcd", "abcde")); // Output: 'e'
+        System.out.println(solution.findTheDifference("", "y"));         // Output: 'y'
+    }
+}
+
+//Ransom Note
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        Map<Character, Integer> magazineMap = new HashMap<>();
+        
+        // Count the occurrences of each character in the magazine
+        for (char c : magazine.toCharArray()) {
+            magazineMap.put(c, magazineMap.getOrDefault(c, 0) + 1);
+        }
+        
+        // Check if the ransom note can be constructed
+        for (char c : ransomNote.toCharArray()) {
+            if (!magazineMap.containsKey(c) || magazineMap.get(c) == 0) {
+                return false;
+            }
+            magazineMap.put(c, magazineMap.get(c) - 1);
+        }
+        
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.canConstruct("a", "b"));    // Output: false
+        System.out.println(solution.canConstruct("aa", "ab"));  // Output: false
+        System.out.println(solution.canConstruct("aa", "aab")); // Output: true
+    }
+}
+
+//Guess Number Higher or Lower
+public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+        int left = 1;
+        int right = n;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int result = guess(mid);
+            if (result == 0) {
+                return mid; // The guessed number is correct
+            } else if (result == -1) {
+                right = mid - 1; // The guessed number is higher than the picked number
+            } else {
+                left = mid + 1; // The guessed number is lower than the picked number
+            }
+        }
+        
+        return -1; // This line should never be reached
+    }
+}
+
+//Valid Perfect Square
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        if (num < 1) {
+            return false;
+        }
+        long left = 1, right = num;
+        while (left <= right) {
+            long mid = left + (right - left) / 2;
+            long square = mid * mid;
+            if (square == num) {
+                return true;
+            } else if (square < num) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.isPerfectSquare(16)); // Output: true
+        System.out.println(solution.isPerfectSquare(14)); // Output: false
+    }
+}
+
+//Insertion of two arrays
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+        List<Integer> result = new ArrayList<>();
+        
+        // Count the occurrences of each element in nums1
+        for (int num : nums1) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        
+        // Find the intersection with nums2
+        for (int num : nums2) {
+            if (map.containsKey(num) && map.get(num) > 0) {
+                result.add(num);
+                map.put(num, map.get(num) - 1);
+            }
+        }
+        
+        // Convert the result list to an array
+        int[] intersection = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            intersection[i] = result.get(i);
+        }
+        
+        return intersection;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums1 = {1, 2, 2, 1};
+        int[] nums2 = {2, 2};
+        int[] result1 = solution.intersect(nums1, nums2);
+        System.out.println(Arrays.toString(result1)); // Output: [2, 2]
+
+        int[] nums3 = {4, 9, 5};
+        int[] nums4 = {9, 4, 9, 8, 4};
+        int[] result2 = solution.intersect(nums3, nums4);
+        System.out.println(Arrays.toString(result2)); // Output: [4, 9]
+    }
+}
+
+//Reverse Vowels of a String
+import java.util.HashSet;
+import java.util.Set;
+
+class Solution {
+    public String reverseVowels(String s) {
+        Set<Character> vowels = new HashSet<>();
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        vowels.add('A');
+        vowels.add('E');
+        vowels.add('I');
+        vowels.add('O');
+        vowels.add('U');
+        
+        char[] chars = s.toCharArray();
+        int left = 0;
+        int right = chars.length - 1;
+        
+        while (left < right) {
+            while (left < right && !vowels.contains(chars[left])) {
+                left++;
+            }
+            while (left < right && !vowels.contains(chars[right])) {
+                right--;
+            }
+            if (left < right) {
+                char temp = chars[left];
+                chars[left] = chars[right];
+                chars[right] = temp;
+                left++;
+                right--;
+            }
+        }
+        
+        return new String(chars);
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.reverseVowels("IceCreAm")); // Output: "AceCreIm"
+        System.out.println(solution.reverseVowels("leetcode")); // Output: "leotcede"
+    }
+}
+
+//Reverse String
+class Solution {
+    public void reverseString(char[] s) {
+        int left = 0;
+        int right = s.length - 1;
+        
+        while (left < right) {
+            // Swap the characters at left and right indices
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            
+            // Move the pointers towards the center
+            left++;
+            right--;
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        char[] s1 = {'h', 'e', 'l', 'l', 'o'};
+        solution.reverseString(s1);
+        System.out.println(Arrays.toString(s1)); // Output: ["o", "l", "l", "e", "h"]
+
+        char[] s2 = {'H', 'a', 'n', 'n', 'a', 'h'};
+        solution.reverseString(s2);
+        System.out.println(Arrays.toString(s2)); // Output: ["h", "a", "n", "n", "a", "H"]
+    }
+}
+
+//Longest Palindrome
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int longestPalindrome(String s) {
+        Map<Character, Integer> countMap = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            countMap.put(c, countMap.getOrDefault(c, 0) + 1);
+        }
+
+        int length = 0;
+        boolean oddCountFound = false;
+        for (int count : countMap.values()) {
+            if (count % 2 == 0) {
+                length += count;
+            } else {
+                length += count - 1;
+                oddCountFound = true;
+            }
+        }
+
+        if (oddCountFound) {
+            length += 1;
+        }
+
+        return length;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.longestPalindrome("abccccdd")); // Output: 7
+        System.out.println(solution.longestPalindrome("a"));        // Output: 1
+    }
+}
+
+//Fizz Buzz
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<String> fizzBuzz(int n) {
+        List<String> answer = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            if (i % 3 == 0 && i % 5 == 0) {
+                answer.add("FizzBuzz");
+            } else if (i % 3 == 0) {
+                answer.add("Fizz");
+            } else if (i % 5 == 0) {
+                answer.add("Buzz");
+            } else {
+                answer.add(String.valueOf(i));
+            }
+        }
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.fizzBuzz(3)); // Output: ["1", "2", "Fizz"]
+        System.out.println(solution.fizzBuzz(5)); // Output: ["1", "2", "Fizz", "4", "Buzz"]
+    }
+}
+
+//Third Maximum number
+import java.util.TreeSet;
+
+class Solution {
+    public int thirdMax(int[] nums) {
+        TreeSet<Integer> set = new TreeSet<>();
+        for (int num : nums) {
+            set.add(num);
+            if (set.size() > 3) {
+                set.pollFirst();
+            }
+        }
+        return set.size() == 3 ? set.first() : set.last();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums1 = {3, 2, 1};
+        System.out.println(solution.thirdMax(nums1)); // Output: 1
+
+        int[] nums2 = {1, 2};
+        System.out.println(solution.thirdMax(nums2)); // Output: 2
+
+        int[] nums3 = {2, 2, 3, 1};
+        System.out.println(solution.thirdMax(nums3)); // Output: 1
+    }
+}
+
+//Find the Binary Search Tree
+import java.util.ArrayList;
+import java.util.List;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    private int currentVal;
+    private int currentCount;
+    private int maxCount;
+    private List<Integer> modes;
+
+    public int[] findMode(TreeNode root) {
+        modes = new ArrayList<>();
+        currentVal = 0;
+        currentCount = 0;
+        maxCount = 0;
+        
+        inorderTraversal(root);
+        
+        int[] result = new int[modes.size()];
+        for (int i = 0; i < modes.size(); i++) {
+            result[i] = modes.get(i);
+        }
+        return result;
+    }
+
+    private void inorderTraversal(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        
+        inorderTraversal(node.left);
+        
+        handleValue(node.val);
+        
+        inorderTraversal(node.right);
+    }
+
+    private void handleValue(int val) {
+        if (val != currentVal) {
+            currentVal = val;
+            currentCount = 0;
+        }
+        currentCount++;
+        
+        if (currentCount > maxCount) {
+            maxCount = currentCount;
+            modes.clear();
+            modes.add(val);
+        } else if (currentCount == maxCount) {
+            modes.add(val);
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        TreeNode root = new TreeNode(1);
+        root.right = new TreeNode(2);
+        root.right.left = new TreeNode(2);
+
+        int[] result = solution.findMode(root);
+        for (int val : result) {
+            System.out.print(val + " "); // Output: 2
+        }
+    }
+}
